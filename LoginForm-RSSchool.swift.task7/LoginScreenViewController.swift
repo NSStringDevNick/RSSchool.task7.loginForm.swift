@@ -153,8 +153,15 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
     private var loginInputText: String = ""
     private var passInputText: String = ""
     
-    private var labelView = UILabel()
+    private let labelView: UILabel = {
+        let label = UILabel()
+        label.text = "RSSchool"
+        label.font = UIFont.boldSystemFont(ofSize: 36)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
+//    private lazy var loginTextField = UITextField()
     private lazy var loginTextField: UITextField = {
         let field = UITextField()
         field.delegate = self
@@ -164,17 +171,67 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
         field.borderStyle = UITextField.BorderStyle.roundedRect
         field.tintColor = ConstantsOfColors.blackColor
         field.layer.borderColor = UIColor.black.cgColor
-        //        loginTextField.layer.borderColor = BorderState.naDefoltychah
         field.layer.borderWidth = 1.0
-        loginTextField.layer.cornerRadius = 5.0
-
+        field.layer.cornerRadius = 5.0
         return field
     }()
-    private var passTextField = UITextField()
-    private var authorizeButton = UIButton()
-    private let authorizeButtonLabel = UILabel()
     
-    private var secureView = UIView()
+    private lazy var passTextField: UITextField = {
+        let field = UITextField()
+        field.delegate = self
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.placeholder = "enter pass"
+        field.isSecureTextEntry = true
+        field.autocapitalizationType = .none
+        field.borderStyle = UITextField.BorderStyle.roundedRect
+        field.tintColor = ConstantsOfColors.blackCoralDefoltColor
+        field.layer.borderWidth = 1.0
+        field.layer.cornerRadius = 5.0
+        return field
+    }()
+    
+    private let authorizeButton: UIButton = {
+        let button = UIButton()
+        button.bounds = CGRect(x: 0, y: 0, width: 156, height: 42)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 5.0
+        button.layer.borderWidth = 1.0
+        button.layer.borderColor = UIColor.blue.cgColor
+        button.tintColor = UIColor.blue
+        button.setTitleColor(ConstantsOfColors.blackColor, for: .normal)
+//        button.addTarget(self, action:#selector(buttonClicked), for: .touchUpInside)   //// TODO: вопросич -------------------
+        return button
+    }()
+    
+    private let authorizeButtonLabel: UILabel = {
+        let label = UILabel()
+        label.text = "authorize"
+        label.textColor = UIColor.blue
+        label.font = UIFont(name: "Semibold", size: label.font.pointSize)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let authorizeButtonImage: UIImageView = {
+        
+        let image = UIImage(systemName: "person")?.withTintColor(UIColor.blue, renderingMode: .alwaysOriginal)
+        let imageView = UIImageView(image: image)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+
+        return imageView
+    }()
+
+    
+    private var secureView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.borderColor = ConstantsOfColors.blackColor.cgColor
+        view.layer.borderWidth = 2.0
+        view.layer.cornerRadius = 10.0
+        view.isHidden = false
+        return view
+    }()
+    
     private var firstSecureNum = UIButton()
     private var secondSecureNum = UIButton()
     private var thirdSecureNum = UIButton()
@@ -204,69 +261,25 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
     private func createViews (){
         
         
-        // Label RSSchool
-        let myLabelView = CGRect(x: 0, y: 0, width: 150, height: 23)
-        labelView.frame = myLabelView
-        labelView.text = "RSSchool"
-        labelView.font = UIFont.boldSystemFont(ofSize: 36)
-        labelView.center = self.view.center
-        labelView.translatesAutoresizingMaskIntoConstraints = false
+//        // Label RSSchool
         view.addSubview(labelView)
         
         //Login textField
-//        let myTextFieldView = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 36, height: 30)
-//        loginTextField.frame = myTextFieldView
-//        loginTextField.delegate = self
-//        loginTextField.autocapitalizationType = .none
-//        loginTextField.translatesAutoresizingMaskIntoConstraints = false
-//        loginTextField.placeholder = "enter login"
-//        loginTextField.borderStyle = UITextField.BorderStyle.roundedRect
-//        loginTextField.tintColor = ConstantsOfColors.blackColor
-//        loginTextField.layer.borderColor = UIColor.black.cgColor
-//        //        loginTextField.layer.borderColor = BorderState.naDefoltychah
-//        loginTextField.layer.borderWidth = 1.0
-//        loginTextField.layer.cornerRadius = 5.0
         view.addSubview(loginTextField)
         
         //Pass textField
-        let myPassFieldView = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 36, height: 30)
-        passTextField.frame = myPassFieldView
-        passTextField.delegate = self
-        passTextField.translatesAutoresizingMaskIntoConstraints = false
-        passTextField.placeholder = "enter pass"
-        passTextField.isSecureTextEntry = true
-        passTextField.autocapitalizationType = .none
-        passTextField.borderStyle = UITextField.BorderStyle.roundedRect
-        passTextField.tintColor = ConstantsOfColors.blackCoralDefoltColor
-        passTextField.layer.borderWidth = 1.0
-        passTextField.layer.cornerRadius = 5.0
         view.addSubview(passTextField)
         
         //Authorize Button
-        _ = authorizeButton
-//        authorizeButton.frame = myAuthorizeButton
-        authorizeButton.translatesAutoresizingMaskIntoConstraints = false
-        authorizeButton.layer.cornerRadius = 5.0
-        authorizeButton.layer.borderWidth = 1.0
-        authorizeButton.layer.borderColor = UIColor.blue.cgColor
-        authorizeButton.setTitle("authorize", for: .normal)
-        authorizeButton.setTitleColor(UIColor.blue, for: .normal)
-        authorizeButton.tintColor = UIColor.blue
-        authorizeButton.setTitleColor(ConstantsOfColors.blackColor, for: .normal)
         authorizeButton.addTarget(self, action:#selector(buttonClicked), for: .touchUpInside)
         view.addSubview(authorizeButton)
+        view.addSubview(authorizeButtonLabel)
+        view.addSubview(authorizeButtonImage)
         
 //        let myAuthorizeButtonLabel
         
         //MARK: -secure view
-        let mySecureView = CGRect(x: 0, y: 0, width: 220, height: 400)
-        secureView.frame = mySecureView
-        secureView.translatesAutoresizingMaskIntoConstraints = false
-//        secureView.layer.backgroundColor = UIColor.blue.cgColor
-        secureView.layer.borderColor = ConstantsOfColors.blackColor.cgColor
-        secureView.layer.borderWidth = 2.0
-        secureView.layer.cornerRadius = 10.0
-        secureView.isHidden = false
+
         view.addSubview(secureView)
         
         //create 1...3 buttons
@@ -332,9 +345,19 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
             
             //authorize Button
             authorizeButton.topAnchor.constraint(equalTo: passTextField.bottomAnchor, constant: 60),
-            //            authorizeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             authorizeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 110),
             authorizeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -110),
+            
+            //authorize Button label
+            authorizeButtonLabel.topAnchor.constraint(equalTo: authorizeButton.topAnchor, constant: 10),
+            authorizeButtonLabel.bottomAnchor.constraint(equalTo: authorizeButton.bottomAnchor, constant: -10),
+            authorizeButtonLabel.trailingAnchor.constraint(equalTo: authorizeButton.trailingAnchor, constant: -20),
+//
+//            //authorize Button image
+            authorizeButtonImage.topAnchor.constraint(equalTo: authorizeButton.topAnchor, constant: 10),
+            authorizeButtonImage.bottomAnchor.constraint(equalTo: authorizeButton.bottomAnchor, constant: -10),
+            authorizeButtonImage.leadingAnchor.constraint(equalTo: authorizeButton.leadingAnchor, constant: 20),
+            authorizeButtonImage.trailingAnchor.constraint(equalTo: authorizeButtonLabel.leadingAnchor, constant: -5),
             
             //secure view
             // paddings -> constant \ screen size ratio
@@ -353,7 +376,7 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
             secondSecureNum.centerXAnchor.constraint(equalTo: secureView.centerXAnchor),
             secondSecureNum.topAnchor.constraint(equalTo: secureView.topAnchor, constant: 45),
             secondSecureNum.bottomAnchor.constraint(equalTo: secureView.bottomAnchor, constant: -15),
-            secondSecureNum.leadingAnchor.constraint(equalTo: firstSecureNum.trailingAnchor, constant: 20),
+            secondSecureNum.leadingAnchor.constraint(equalTo: secureView.trailingAnchor, constant: 20),
 //            secondSecureNum.trailingAnchor.constraint(equalTo: thirdSecureNum.leadingAnchor, constant: -23),
             
             thirdSecureNum.topAnchor.constraint(equalTo: secureView.topAnchor, constant: 45),
@@ -386,7 +409,7 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
     
     
     func showAlert(){
-        let alert = UIAlertController(title: "Welcom", message: "You are successfuly authorized!" , preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: "Welcome", message: "You are successfuly authorized!" , preferredStyle: UIAlertController.Style.alert)
         
         alert.addAction(UIAlertAction(title: "Refresh", style: UIAlertAction.Style.destructive, handler: {_ in
             self.clearTextFieldsAndViews()

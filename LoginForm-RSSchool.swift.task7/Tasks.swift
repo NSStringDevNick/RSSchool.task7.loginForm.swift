@@ -9,9 +9,12 @@ import Foundation
 
 
 /*
- 
- 1) secure view -> UIAlert
- 2) create circle view to secury view
  3) state machine
- 4) 
+ 5) func to return UIbutton
+ 6) proxy
+ 
+ 
+ 
+ вопросичи
+ 7)какого хуя не используются цвета из ConstantsOfColors ????????????/
 */

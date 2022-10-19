@@ -9,12 +9,11 @@ import Foundation
 
 
 /*
- 3) state machine
- 5) func to return UIbutton
- 6) proxy
+ 1) when log & pass UITextfields are entered correctly took å = 0.5, authorizeButtonLabel too
+    add highlighted state to authorizeButton
+ 2) Fix the bug with secureUILabel. Which the data in the field is not lost when createDefaultState()
+ 3) LINE +-393 ????
+ 4) 
  
  
- 
- вопросичи
- 7)какого хуя не используются цвета из ConstantsOfColors ????????????/
 */

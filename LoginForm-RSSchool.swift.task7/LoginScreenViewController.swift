@@ -182,25 +182,24 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
     private let authorizeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 5.0
-        button.layer.borderWidth = 1.0
-        button.layer.borderColor = UIColor.blue.cgColor
-        button.tintColor = UIColor.blue
-        button.setTitleColor(ConstantsOfColors.blackColor, for: .normal)
+        button.layer.cornerRadius = 10.0
+        button.layer.borderWidth = 2.0
+        button.layer.borderColor = ConstantsOfColors.littleBoyBlueColor.cgColor
+        button.tintColor = ConstantsOfColors.littleBoyBlueColor
         return button
     }()
     
     private let authorizeButtonLabel: UILabel = {
         let label = UILabel()
         label.text = "authorize"
-        label.textColor = UIColor.blue
+        label.textColor = ConstantsOfColors.littleBoyBlueColor
         label.font = UIFont(name: "Semibold", size: label.font.pointSize)?.withSize(20.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let authorizeButtonImage: UIImageView = {
-        let image = UIImage(systemName: "person")?.withTintColor(UIColor.blue, renderingMode: .alwaysOriginal)
+        let image = UIImage(systemName: "person")?.withTintColor(ConstantsOfColors.littleBoyBlueColor, renderingMode: .alwaysOriginal)
         let imageView = UIImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -267,7 +266,6 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
         static let venetianRedErrorColor = UIColor(red: 194/255, green: 1/255, blue: 20/255, alpha: 1.0)
         static let blackColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1.0)
         static let littleBoyBlueColor = UIColor(red: 128/255, green: 164/255, blue: 237/255, alpha: 1.0)
-        
     }
     
     
@@ -285,7 +283,7 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
     private func createViews (){
         
         
-        //        // Label RSSchool
+        // Label RSSchool
         view.addSubview(labelView)
         
         //Login textField
@@ -300,8 +298,7 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
         view.addSubview(authorizeButtonLabel)
         view.addSubview(authorizeButtonImage)
         
-         //MARK: -secure view
-        
+        //MARK: -secure view
         view.addSubview(secureView)
         
         //create 1...3 buttons
@@ -419,7 +416,7 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
     
     func errorUserInput(){
         loginTextField.layer.borderColor = ConstantsOfColors.redColor.cgColor
-//        loginTextField.isEnabled = false
+        //        loginTextField.isEnabled = false
         passTextField.layer.borderColor = ConstantsOfColors.redColor.cgColor
         passTextField.isEnabled = false
         invisibleButtonToPass.isHidden = false
@@ -494,6 +491,10 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
         passTextField.isEnabled = false
         passTextField.textColor = ConstantsOfColors.blackCoralDefoltColor.withAlphaComponent(0.5)
         
+        authorizeButtonImage.tintColor = ConstantsOfColors.littleBoyBlueColor.withAlphaComponent(0.5)
+        authorizeButtonLabel.tintColor = ConstantsOfColors.littleBoyBlueColor.withAlphaComponent(0.5)
+        authorizeButton.layer.borderColor = ConstantsOfColors.littleBoyBlueColor.withAlphaComponent(0.5).cgColor
+        
         firstSecureNum.isHidden = false
         secondSecureNum.isHidden = false
         thirdSecureNum.isHidden = false
@@ -528,6 +529,7 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
         passTextField.layer.borderColor = ConstantsOfColors.blackColor.cgColor
         passTextField.textColor = ConstantsOfColors.blackColor
         
+        secureUILabel.text = ""
         secureUILabel.isHidden = true
         secureView.isHidden = true
         firstSecureNum.isHidden = true
@@ -536,8 +538,6 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
         
         invisibleButtonToLogin.isHidden = true
         invisibleButtonToPass.isHidden = true
-        
-        
     }
     
 }

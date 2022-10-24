@@ -13,7 +13,7 @@ import Foundation
     add highlighted state to authorizeButton
  2) Fix the bug with secureUILabel. Which the data in the field is not lost when createDefaultState()
  3) LINE +-393 ????
- 4) 
- 
+ 4) generic layout / snap kit
+ 5) delegate for 
  
 */

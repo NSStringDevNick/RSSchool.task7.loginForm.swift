@@ -71,64 +71,96 @@ final class LoginPresenter {
 
 protocol LoginDelegate: AnyObject {
     func setupNormalState()
+    func setupInputFieldSuccessState()
+    func setupInputFieldErrorState()
     func setupErrorState()
     func setupSuccessState()
 }
 
 extension LoginScreenViewController: LoginDelegate {
+        func setupInputFieldSuccessState() {
+            //
+        }
+        
+        func setupInputFieldErrorState() {
+            //
+        }
+    
     func setupNormalState() {
-        view.layer.borderColor = ConstantsOfColors.turquoiseGreenColor.cgColor
-        //        ConstantsOfColors.blackCoralDefoltColor.cgColor
+        loginTextField.isEnabled = true
+        loginTextField.text = ""
+        loginTextField.layer.borderColor = ConstantsOfColors.blackColor.cgColor
+        loginTextField.textColor = ConstantsOfColors.blackColor
+        
+        passTextField.isEnabled = true
+        passTextField.text = ""
+        passTextField.layer.borderColor = ConstantsOfColors.blackColor.cgColor
+        passTextField.textColor = ConstantsOfColors.blackColor
+        
+        secureUILabel.text = ""
+        secureUILabel.isHidden = true
+        secureView.isHidden = true
+        firstSecureNum.isHidden = true
+        secondSecureNum.isHidden = true
+        thirdSecureNum.isHidden = true
+        
+        invisibleButtonToLogin.isHidden = true
+        invisibleButtonToPass.isHidden = true
     }
     
     func setupErrorState() {
-        //        ConstantsOfColors.redColor.cgColor
+        loginTextField.layer.borderColor = ConstantsOfColors.redColor.cgColor
+        //        loginTextField.isEnabled = false
+        passTextField.layer.borderColor = ConstantsOfColors.redColor.cgColor
+//        passTextField.isEnabled = false
+        invisibleButtonToPass.isHidden = false
+        invisibleButtonToLogin.isHidden = false
+        
     }
     
     func setupSuccessState() {
-        //        ConstantsOfColors.turquoiseGreenColor.cgColor
         
     }
 }
 
+
 final class LoginScreenViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate {
     
-    
-    //    private var currentState: State = .normal {
-    //        didSet {
-    //            handleStateChanging()
-    //        }
-    //    }
-    //
-    //    func handleStateChanging() {
-    //        switch currentState {
-    //            case .normal:
-    //                setupNormalState()
-    //            case .error:
-    //                setupErrorState()
-    //            case .success:
-    //                setupSuccessState()
-    //        }
-    //    }
-    
+//        private var currentState: State = .normal {
+//            didSet {
+//                handleStateChanging()
+//            }
+//        }
+//
+//        func handleStateChanging() {
+//            switch currentState {
+//                case .normal:
+//                    setupNormalState()
+//                case .error:
+//                    setupErrorState()
+//                case .success:
+//                    setupSuccessState()
+//            }
+//        }
     
     
-    //    // https://refactoring.guru/design-patterns/state
-    //    func changeState(to state: State) {
-    //        switch currentState {
-    //            case .success:
-    //                break
-    //            case .error:
-    //                break
-    //            case .normal:
-    //                switch state {
-    //                    case .success, .error:
-    //                        currentState = state
-    //                    case .normal:
-    //                        break
-    //                }
-    //        }
-    //    }
+    
+//        // https://refactoring.guru/design-patterns/state
+//        func changeState(to state: State) {
+//            switch currentState {
+//                case .success:
+//                    break
+//                case .error:
+//                    break
+//                case .normal:
+//                    switch state {
+//                        case .success, .error:
+//                            currentState = state
+//                        case .normal:
+//                            break
+//                    }
+//            }
+//        }
     
     private var loginInputText: String = ""
     private var passInputText: String = ""
@@ -161,6 +193,7 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
                            isSecureTextEntry: false as NSSecureCoding,
                            autocapitalizationType: .none)
         field.translatesAutoresizingMaskIntoConstraints = false
+        field.delegate = self
         return field
     }()
     
@@ -176,6 +209,7 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
                            isSecureTextEntry: true as NSSecureCoding,
                            autocapitalizationType: .none)
         field.translatesAutoresizingMaskIntoConstraints = false
+        field.delegate = self
         return field
     }()
     
@@ -236,6 +270,7 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
         button.layer.borderColor = UIColor.blue.cgColor
         button.layer.borderWidth = 1.5
         button.isHidden = true
+        button.tag = Int(title) ?? 0
         return button
     }
     
@@ -276,7 +311,7 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
         overrideUserInterfaceStyle = .light
         createViews()
         createConstraintsInit()
-        
+    
     }
     
     //MARK: -create views
@@ -302,11 +337,11 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
         view.addSubview(secureView)
         
         //create 1...3 buttons
-        firstSecureNum.addTarget(self, action: #selector(addOneToSecureUILabel), for: .touchUpInside)
+        firstSecureNum.addTarget(self, action: #selector(addToSecureUILabel), for: .touchUpInside)
         view.addSubview(firstSecureNum)
-        secondSecureNum.addTarget(self, action: #selector(addTwoToSecureUILabel), for: .touchUpInside)
+        secondSecureNum.addTarget(self, action: #selector(addToSecureUILabel), for: .touchUpInside)
         view.addSubview(secondSecureNum)
-        thirdSecureNum.addTarget(self, action: #selector(addThreeToSecureUILabel), for: .touchUpInside)
+        thirdSecureNum.addTarget(self, action: #selector(addToSecureUILabel), for: .touchUpInside)
         view.addSubview(thirdSecureNum)
         
         //create secure input code
@@ -373,7 +408,6 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
             secureView.topAnchor.constraint(equalTo: authorizeButton.bottomAnchor, constant: 67),
             secureView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             secureView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: 50),
-            
             secureView.leadingAnchor.constraint(equalTo:  firstSecureNum.leadingAnchor, constant: -23),
             
             firstSecureNum.topAnchor.constraint(equalTo: secureView.topAnchor, constant: 45),
@@ -418,68 +452,32 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
         loginTextField.layer.borderColor = ConstantsOfColors.redColor.cgColor
         //        loginTextField.isEnabled = false
         passTextField.layer.borderColor = ConstantsOfColors.redColor.cgColor
-        passTextField.isEnabled = false
+//        passTextField.isEnabled = false
         invisibleButtonToPass.isHidden = false
         invisibleButtonToLogin.isHidden = false
         print("error")
         
     }
+
     
-    
-    
-    //    private var secureUITextFieldTitle: String = ""
-    //    private var secureUITextFieldNumbers: [String] = []
-    
-    
-    //    MARK: -FIX
-    //    @objc func addNumberToSecureUILabel(number: Int){
-    //        secureUITextFieldNumbers.append(number)
-    //        let intToString = secureUITextFieldNumbers.map(String.init)
-    //        secureUITextFieldTitle = intToString.joined(separator:" ")
-    //        secureUILabel.text = "\(secureUITextFieldTitle)"
-    //        print("\(number)")
-    //        if secureUITextFieldNumbers.count == 3{
-    //            checkSecureCode()
-    //        }
-    //    }
-    @objc func addOneToSecureUILabel(){
-        secureUITextFieldNumbers.append(1)
+    @objc func addToSecureUILabel(sender: UIButton) {
+        secureUITextFieldNumbers.append(sender.tag)
         let intToString = secureUITextFieldNumbers.map(String.init)
         secureUITextFieldTitle = intToString.joined(separator:" ")
         secureUILabel.text = "\(secureUITextFieldTitle)"
-        print("1")
-        if secureUITextFieldNumbers.count == 3{
-            checkSecureCode()
-        }
-    }
-    @objc func addTwoToSecureUILabel(){
-        secureUITextFieldNumbers.append(2)
-        let intToString = secureUITextFieldNumbers.map(String.init)
-        secureUITextFieldTitle = intToString.joined(separator:" ")
-        secureUILabel.text = "\(secureUITextFieldTitle)"
-        print("2")
-        if secureUITextFieldNumbers.count == 3{
-            checkSecureCode()
-        }
-        
-    }
-    @objc func addThreeToSecureUILabel(){
-        secureUITextFieldNumbers.append(3)
-        let intToString = secureUITextFieldNumbers.map(String.init)
-        secureUITextFieldTitle = intToString.joined(separator:" ")
-        secureUILabel.text = "\(secureUITextFieldTitle)"
-        print("3")
+        print("\(sender.tag)")
         print(secureUITextFieldNumbers)
         if secureUITextFieldNumbers.count == 3{
             checkSecureCode()
         }
     }
     
+    
     func checkSecureCode(){
         if secureUITextFieldNumbers.count == 3 && secureUITextFieldNumbers == [1, 2, 3]{
             showAlert()
         }else{
-            createDefaultState()
+            setDefaultState()
         }
     }
     
@@ -505,7 +503,7 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
         let alert = UIAlertController(title: "Welcome", message: "You are successfuly authorized!" , preferredStyle: UIAlertController.Style.alert)
         
         alert.addAction(UIAlertAction(title: "Refresh", style: UIAlertAction.Style.destructive, handler: {_ in
-            self.createDefaultState()
+            self.setDefaultState()
         }))
         
         self.present(alert, animated: true, completion: nil)
@@ -515,10 +513,10 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
     
     @objc func defaultTextField(){
         
-        createDefaultState()
+        setDefaultState()
     }
     
-    func createDefaultState(){
+    func setDefaultState(){
         loginTextField.isEnabled = true
         loginTextField.text = ""
         loginTextField.layer.borderColor = ConstantsOfColors.blackColor.cgColor
@@ -542,6 +540,46 @@ final class LoginScreenViewController: UIViewController, UITextViewDelegate, UIT
     
 }
 
+extension LoginScreenViewController {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        print(">> \(#function)")
+//        if state == .error {
+//            setDefaultState()
+//        }
+    }
+    
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        print(">> \(#function)")
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print(">> \(#function)")
+        print(">>> textField.text.count \(String(describing: textField.text?.count))")
+        if textField.text?.count ?? 0 > 20 {
+            return false
+        }
+        return true
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        // method validation
+    }
+    
+    func isValidAll() -> Bool {
+        // login.isValid &&
+        // passe.isValid
+        return true
+    }
+}
+
+
+//extension LoginScreenViewController {
+//
+//}
+
+// MARK: - Utility
 
 extension UIView {
     public func setViewBorderAndColor(borderColor:CGColor,borderWith:CGFloat,borderCornerRadius:CGFloat){
